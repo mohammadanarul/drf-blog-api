@@ -50,7 +50,6 @@ jobs:
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_ENGINE: ${{secrets.DB_ENGINE}}
       run: |
-        # python manage.py collectstatic --no-input
         coverage run manage.py test && coverage report --fail-under=100 && coverage xml
 
 
