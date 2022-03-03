@@ -2,7 +2,7 @@ from .base import *
 
 DATABASES = {
     'default': {
-        'ENGINE': config('BD_ENGINE'),
+        'ENGINE': config('DB_ENGINE'),
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('BD_PASSWORD'),
