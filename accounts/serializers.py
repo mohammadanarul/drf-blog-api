@@ -5,6 +5,11 @@ from django_countries.serializer_fields import CountryField
 from .models import Account
 
 
+class AccountSerializerId(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'username']
+
 class AccountSerializer(CountryFieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Account
@@ -20,7 +25,7 @@ class AccountRegisterSerializer(serializers.ModelSerializer, CountryFieldMixin):
 
     class Meta:
         model = Account
-        fields = ('username', 'email', 'phone_number', 'country',
+        fields = ('username', 'email', 'phone_number',
                   'password1', 'password2', 'is_active')
         extra_kwargs = {
             'password': {'write_only': True}
@@ -31,7 +36,6 @@ class AccountRegisterSerializer(serializers.ModelSerializer, CountryFieldMixin):
             username=validated_data['username'],
             email=validated_data['email'],
             phone_number=validated_data['phone_number'],
-            country=validated_data['country']
         )
         password1 = validated_data['password1']
         password2 = validated_data['password2']

@@ -20,7 +20,7 @@ class Post(TimeStamp):
     slug = models.SlugField(_("slug"), unique=True, blank=True)
     description = models.TextField(_('description'))
     category = models.ForeignKey(Category, verbose_name=_(
-        "category"), on_delete=models.CASCADE, related_name='posts')
+        "category"), on_delete=models.CASCADE, related_name='posts', null=True, blank=True)
     tags = TaggableManager()
     status = models.CharField(
         _("status"), max_length=10, choices=STATUS_CHOICES)

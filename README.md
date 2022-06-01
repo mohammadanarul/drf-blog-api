@@ -2,9 +2,9 @@
 
 # drf-blog-api
 
-'''
-deactivate
-'''
+
+> deactivate
+
 
 ### Project Setup
 

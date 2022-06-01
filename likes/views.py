@@ -6,13 +6,13 @@ from rest_framework.response import Response
 from accounts.models import Account
 from posts.models import Post
 from django.db.models import Q
-from rest_framework import authentication, permissions, status
+from rest_framework import authentication, permissions, status, generics
 
 
 class LikeModelViewset(ModelViewSet):
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    lookup_field = 'pk'
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -22,15 +22,22 @@ class LikeModelViewset(ModelViewSet):
             'messages': 'Your liked models delete sucessfully.'
         })
 
+# class LikeCreateAPIView(generics.CreateAPIView):
+#     # permission_classes = [permissions.IsAuthenticated]
+#     queryset = Like.objects.all()
+#     serializer_class = LikeSerializer
+#     lookup_field = pk
 
-class LikeView(APIView):
+
+
+class LikeAPIView(APIView):
     """
     View to list all users in the system.
 
     * Requires token authentication.
     * Only admin users are able to access this view.
     """
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, slug, format=None):
         user = request.user

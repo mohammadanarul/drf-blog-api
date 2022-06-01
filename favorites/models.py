@@ -9,5 +9,8 @@ User = get_user_model()
 class Favorite(TimeStamp):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='my_favorites')
-    user = models.ForeignKey(
+    post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='favorites')
+    
+    def __str__(self)-> str:
+        return f"{self.user.username}->{self.post.title}"

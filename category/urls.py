@@ -1,12 +1,8 @@
-from unicodedata import name
 from django.urls import path
-from rest_framework.routers import DefaultRouter
-from .views import CategoryModelViewset, CategoryListView
-
-router = DefaultRouter()
-router.register(r'categories', CategoryModelViewset, basename='categories')
+from .views import CategoryListView, ger_all_category_grouping
 
 # app_name = 'category'
 urlpatterns = [
-    path('category/', CategoryListView.as_view(), name='category')
-] + router.urls
+    path('category/', CategoryListView.as_view(), name='category'),
+    path('test/', ger_all_category_grouping, name='cat')
+]

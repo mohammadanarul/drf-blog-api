@@ -1,11 +1,10 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
-from .views import PostModelViewset, recent_post_filter
+from .views import PostDetailAPIView, PostCreateApi
 
-router = DefaultRouter()
-router.register(r'posts', PostModelViewset, basename='posts')
 
 
 urlpatterns = [
-    path('recent-posts/<category>/', recent_post_filter, name='recent-posts')
-] + router.urls
+    path('post-detail/<slug>/', PostDetailAPIView.as_view(), name='post_detail_api'),
+    path('create/', PostCreateApi.as_view(), name='post_create_api')
+    # path('category-posts/<slug>/', recent_post_filter, name='category-posts')
+]

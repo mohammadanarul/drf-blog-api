@@ -2,6 +2,9 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view
+from posts.models import Post
 from .serializers import CommentSerializer
 from .models import Comment
 
@@ -12,25 +15,15 @@ class CommentViewSet(ModelViewSet):
     A viewset for viewing and editing user instances.
     """
     # permission_classes = [IsAuthenticated]
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.root_nodes()
     serializer_class = CommentSerializer
     lookup_field = 'id'
 
     def get_permissions(self):
         if self.action == 'list':
-            return [IsAuthenticated()]
-        elif self.action == 'retrieve':
-            return [IsAuthenticated()]
-        elif self.action == 'create':
-            return [IsAuthenticated()]
-        elif self.action == 'update':
-            return [IsAuthenticated()]
-        elif self.action == 'partial_update':
-            return [IsAuthenticated()]
-        elif self.action == 'destroy':
-            return [IsAuthenticated()]
+            return [AllowAny()]
         else:
-            return super(self, CommentViewSet).get_permissions()
+            return super(CommentViewSet, self).get_permissions()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -70,4 +63,32 @@ class CommentViewSet(ModelViewSet):
         return Response({
             'status': status.HTTP_204_NO_CONTENT,
             'messages': 'Deleted your comments sucessfully.'
+        })
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+class PostCommentList(ListAPIView):
+    queryset = Comment.objects.root_nodes()
+    serializer_class = CommentSerializer
+    # lookup_field = 'post'
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['post']
+    def get_queryset(self):
+        return Comment.objects.filter(post__slug='using-drf-effectively')
+
+@api_view(['GET'])
+def post_comments_list_api(request, slug):
+    try:
+        post = Post.objects.get(slug=slug)
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return Response({
+            'messages': serializer.data,
+            'status': status.HTTP_200_OK,
+        })
+    except Exception as e:
+        print(e)
+        return Response({
+            'messages': 'Sorry not fount',
+            'status': status.HTTP_404_NOT_FOUND,
         })

@@ -1,9 +1,12 @@
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,9 +42,10 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     "corsheaders",
     'rest_framework_simplejwt',
-    'django_countries',
+    'django_filters',
     'mptt',
     'taggit',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAUL_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -62,7 +66,7 @@ ROOT_URLCONF = 'blogapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,5 +161,23 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+# authentications permissions
+# REST_FRAMEWORK = {
+    
+# }
+
+# CORS_ALLOWED_ORIGINS
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
+]

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-from django_countries.fields import CountryField
 from .managers import AccountManager
 
 
@@ -10,14 +9,13 @@ class Account(AbstractBaseUser):
     email = models.EmailField(max_length=254, unique=True)
     phone_number = models.CharField(
         _("phone number"), max_length=15, unique=True)
-    country = CountryField()
     address = models.CharField(max_length=1000)
     avatar = models.ImageField(
         upload_to=f'avatar/{username}/', default='user/avatar.png')
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
     joined_date = models.DateTimeField(
         verbose_name='date join', auto_now_add=True)
-    otp = models.CharField(_("otp"), max_length=6)
+    otp = models.CharField(_("otp"), max_length=6, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
