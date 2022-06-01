@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from django_countries.serializers import CountryFieldMixin
-from django_countries.serializer_fields import CountryField
 from .models import Account
 
 
@@ -10,13 +8,13 @@ class AccountSerializerId(serializers.ModelSerializer):
         model = Account
         fields = ['id', 'username']
 
-class AccountSerializer(CountryFieldMixin, serializers.ModelSerializer):
+class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
 
 
-class AccountRegisterSerializer(serializers.ModelSerializer, CountryFieldMixin):
+class AccountRegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(
