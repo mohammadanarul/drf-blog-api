@@ -2,7 +2,8 @@ from .base import *
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 
 
 DATABASES = {
@@ -25,11 +26,3 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='')
 
-
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "http://127.0.0.1:9000",
-]

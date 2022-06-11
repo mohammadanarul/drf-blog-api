@@ -1,17 +1,20 @@
 from .base import *
+import django_heroku
 import dj_database_url
 
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['*']
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['https://learnwithanarul.herokuapp.com/','*']
 
 # database management
 DATABASES = {'default': dj_database_url.config()}
 
 # Configure Django App for Heroku.
-import django_heroku
 django_heroku.settings(locals())
 
 # whitenoise collectstatic
